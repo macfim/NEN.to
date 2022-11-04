@@ -1,9 +1,18 @@
-import express, { Request, response, Response } from "express";
+require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+
+import movieRouter from "./controllers/movie";
+
+const MONGODB_URI_DEV = process.env.MONGODB_URI_DEV;
 
 const app = express();
 
-app.get("/", (request: Request, response: Response) => {
-  response.send("welp");
-});
+mongoose
+  .connect(MONGODB_URI_DEV!)
+  .then(() => console.log(`connected to ${MONGODB_URI_DEV}`))
+  .catch(() => console.log(`failed to connect ${MONGODB_URI_DEV}`));
+
+app.use("/api/movies", movieRouter);
 
 export default app;
