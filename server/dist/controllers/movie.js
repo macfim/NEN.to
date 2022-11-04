@@ -16,9 +16,71 @@ const express_1 = __importDefault(require("express"));
 const Movie_1 = __importDefault(require("../models/Movie"));
 const movieRouter = express_1.default.Router();
 movieRouter.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const movies = yield Movie_1.default.find({});
-    if (movies.length === 0)
-        return response.json({ error: "no movies found" });
-    response.json(movies);
+    try {
+        const movies = yield Movie_1.default.find({});
+        if (movies.length === 0)
+            return response.json({ error: "no movies found" });
+        response.json(movies);
+    }
+    catch (err) {
+        response.json({ error: err.message });
+    }
+}));
+movieRouter.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = request.params;
+        console.log(id);
+        const movie = yield Movie_1.default.findById(id);
+        response.json(movie);
+    }
+    catch (err) {
+        response.json({ error: err.message });
+    }
+}));
+movieRouter.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { title, poster, genre } = request.body;
+        if (!title || !poster)
+            return response.json({ error: "title and/or poster are missing" });
+        const currentDate = new Date().toUTCString();
+        const movie = new Movie_1.default({
+            title,
+            poster,
+            genre: genre && null,
+            updatedAt: currentDate,
+            publishedAt: currentDate,
+        });
+        const newMovie = yield movie.save();
+        response.json(newMovie);
+    }
+    catch (err) {
+        response.json({ error: err.message });
+    }
+}));
+movieRouter.put("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = request.params;
+        const { title, poster } = request.body;
+        if (!title && !poster)
+            return response.json({ error: "should add at least one to modifie" });
+        const movie = yield Movie_1.default.findById(id);
+        if (!movie)
+            return response.json({ error: "movie not found" });
+        const newMovie = yield Movie_1.default.findByIdAndUpdate(id, { title, poster }, { new: true });
+        response.json(newMovie);
+    }
+    catch (err) {
+        response.json({ error: err.message });
+    }
+}));
+movieRouter.delete("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = request.params;
+        const deletedMovie = yield Movie_1.default.findByIdAndDelete(id);
+        response.json(deletedMovie);
+    }
+    catch (err) {
+        response.json({ error: err.message });
+    }
 }));
 exports.default = movieRouter;

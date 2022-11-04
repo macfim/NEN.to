@@ -4,9 +4,11 @@ import mongoose from "mongoose";
 
 import movieRouter from "./controllers/movie";
 
-const MONGODB_URI_DEV = process.env.MONGODB_URI_DEV;
+const MONGODB_URI_DEV = process.env.MONGODB_URI;
 
 const app = express();
+
+app.use(express.json());
 
 mongoose
   .connect(MONGODB_URI_DEV!)
