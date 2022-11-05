@@ -16,7 +16,9 @@ userRouter.post("/", async (request: Request, response: Response) => {
     const { username, password }: INewUser = request.body;
 
     if (!username || !password)
-      return response.json({ error: "username or/and password are blank" });
+      return response
+        .status(400)
+        .json({ error: "username or/and password are blank" });
 
     const saltRounds = process.env.SALT;
     const hash = await bcrypt.hash(password, Number(saltRounds));
@@ -30,7 +32,7 @@ userRouter.post("/", async (request: Request, response: Response) => {
 
     response.json(savedUser);
   } catch (err: any) {
-    response.json(err.message);
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -42,7 +44,7 @@ userRouter.get("/", async (request: Request, response: Response) => {
 
     response.json(users);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -54,7 +56,7 @@ userRouter.get("/:id", async (request: Request, response: Response) => {
 
     response.json(user);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 

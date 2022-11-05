@@ -23,7 +23,7 @@ movieRouter.get("/", (request, response) => __awaiter(void 0, void 0, void 0, fu
         response.json(movies);
     }
     catch (err) {
-        response.json({ error: err.message });
+        response.status(400).json({ error: err.message });
     }
 }));
 movieRouter.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,14 +34,16 @@ movieRouter.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0,
         response.json(movie);
     }
     catch (err) {
-        response.json({ error: err.message });
+        response.status(400).json({ error: err.message });
     }
 }));
 movieRouter.post("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, poster, genres } = request.body;
         if (!title || !poster)
-            return response.json({ error: "title and/or poster are missing" });
+            return response
+                .status(400)
+                .json({ error: "title and/or poster are missing" });
         const movie = new Movie_1.default({
             title,
             poster,
@@ -51,7 +53,7 @@ movieRouter.post("/", (request, response) => __awaiter(void 0, void 0, void 0, f
         response.json(newMovie);
     }
     catch (err) {
-        response.json({ error: err.message });
+        response.status(400).json({ error: err.message });
     }
 }));
 movieRouter.put("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -59,15 +61,17 @@ movieRouter.put("/:id", (request, response) => __awaiter(void 0, void 0, void 0,
         const { id } = request.params;
         const { title, poster } = request.body;
         if (!title && !poster)
-            return response.json({ error: "should add at least one to modifie" });
+            return response
+                .status(400)
+                .json({ error: "should add at least one to modifie" });
         const movie = yield Movie_1.default.findById(id);
         if (!movie)
-            return response.json({ error: "movie not found" });
+            return response.status(400).json({ error: "movie not found" });
         const newMovie = yield Movie_1.default.findByIdAndUpdate(id, { title, poster }, { new: true });
         response.json(newMovie);
     }
     catch (err) {
-        response.json({ error: err.message });
+        response.status(400).json({ error: err.message });
     }
 }));
 movieRouter.delete("/:id", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -77,7 +81,7 @@ movieRouter.delete("/:id", (request, response) => __awaiter(void 0, void 0, void
         response.json(deletedMovie);
     }
     catch (err) {
-        response.json({ error: err.message });
+        response.status(400).json({ error: err.message });
     }
 }));
 exports.default = movieRouter;

@@ -12,7 +12,7 @@ movieRouter.get("/", async (request: Request, response: Response) => {
 
     response.json(movies);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -25,7 +25,7 @@ movieRouter.get("/:id", async (request: Request, response: Response) => {
 
     response.json(movie);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -34,7 +34,9 @@ movieRouter.post("/", async (request: Request, response: Response) => {
     const { title, poster, genres } = request.body;
 
     if (!title || !poster)
-      return response.json({ error: "title and/or poster are missing" });
+      return response
+        .status(400)
+        .json({ error: "title and/or poster are missing" });
 
     const movie = new Movie({
       title,
@@ -46,7 +48,7 @@ movieRouter.post("/", async (request: Request, response: Response) => {
 
     response.json(newMovie);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -56,11 +58,13 @@ movieRouter.put("/:id", async (request: Request, response: Response) => {
     const { title, poster } = request.body;
 
     if (!title && !poster)
-      return response.json({ error: "should add at least one to modifie" });
+      return response
+        .status(400)
+        .json({ error: "should add at least one to modifie" });
 
     const movie = await Movie.findById(id);
 
-    if (!movie) return response.json({ error: "movie not found" });
+    if (!movie) return response.status(400).json({ error: "movie not found" });
 
     const newMovie = await Movie.findByIdAndUpdate(
       id,
@@ -70,7 +74,7 @@ movieRouter.put("/:id", async (request: Request, response: Response) => {
 
     response.json(newMovie);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -82,7 +86,7 @@ movieRouter.delete("/:id", async (request: Request, response: Response) => {
 
     response.json(deletedMovie);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 

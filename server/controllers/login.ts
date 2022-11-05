@@ -12,18 +12,18 @@ loginRouter.post("/", async (request: Request, response: Response) => {
     const { username, password } = request.body;
 
     if (!username || !password)
-      return response.json({
+      return response.status(400).json({
         error: "username or/and password can't be blank",
       });
 
     const user = await User.findOne({ username });
 
-    if (!user) return response.json({ error: "no user found" });
+    if (!user) return response.status(400).json({ error: "no user found" });
 
     const isPasswordCorrect = await bcrypt.compare(password, user.hash);
 
     if (!isPasswordCorrect)
-      return response.json({ error: "password incorrect" });
+      return response.status(400).json({ error: "password incorrect" });
 
     const userForToken = {
       id: user.id,
@@ -34,7 +34,7 @@ loginRouter.post("/", async (request: Request, response: Response) => {
 
     response.json({ token, username: user.username });
   } catch (err: any) {
-    response.json(err.message);
+    response.status(400).json({ error: err.message });
   }
 });
 

@@ -12,7 +12,7 @@ genreRouter.get("/", async (request: Request, response: Response) => {
 
     response.json(genres);
   } catch (err: any) {
-    response.json(err.message);
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -24,7 +24,7 @@ genreRouter.get("/:id", async (request: Request, response: Response) => {
 
     response.json(genre);
   } catch (err: any) {
-    response.json(err.message);
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -32,7 +32,7 @@ genreRouter.post("/", async (request: Request, response: Response) => {
   try {
     const { title } = request.body;
 
-    if (!title) return response.json({ error: "title is missing" });
+    if (!title) return response.status(400).json({ error: "title is missing" });
 
     const genre = new Genre({ title });
 
@@ -40,7 +40,7 @@ genreRouter.post("/", async (request: Request, response: Response) => {
 
     response.json(newGenre);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
@@ -52,7 +52,7 @@ genreRouter.delete("/:id", async (request: Request, response: Response) => {
 
     response.json(deletedGenre);
   } catch (err: any) {
-    response.json({ error: err.message });
+    response.status(400).json({ error: err.message });
   }
 });
 
