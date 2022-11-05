@@ -6,7 +6,7 @@ const genreRouter = express.Router();
 
 genreRouter.get("/", async (request: Request, response: Response) => {
   try {
-    const genres = await Genre.find({});
+    const genres = await Genre.find({}).populate("movies");
 
     if (genres.length === 0) return response.json({ error: "no genres found" });
 
@@ -20,7 +20,7 @@ genreRouter.get("/:id", async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
 
-    const genre = await Genre.findById(id);
+    const genre = await Genre.findById(id).populate("movies");
 
     response.json(genre);
   } catch (err: any) {
