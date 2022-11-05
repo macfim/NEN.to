@@ -11,6 +11,7 @@
   "author": "Jassem Boughattas",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
     "@types/mongoose": "^5.11.97",
@@ -22,6 +23,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^6.7.1"

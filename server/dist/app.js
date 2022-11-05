@@ -9,6 +9,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const movie_1 = __importDefault(require("./controllers/movie"));
 const genre_1 = __importDefault(require("./controllers/genre"));
+const user_1 = __importDefault(require("./controllers/user"));
 const MONGODB_URI_DEV = process.env.MONGODB_URI;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -19,4 +20,5 @@ mongoose_1.default
     .catch(() => console.log(`failed to connect ${MONGODB_URI_DEV}`));
 app.use("/api/movies", movie_1.default);
 app.use("/api/genres", genre_1.default);
+app.use("/api/users", user_1.default);
 exports.default = app;
