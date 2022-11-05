@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express from "express";
 import mongoose from "mongoose";
+import cors from 'cors';
 
 import movieRouter from "./controllers/movie";
 import genreRouter from "./controllers/genre";
@@ -10,6 +11,7 @@ const MONGODB_URI_DEV = process.env.MONGODB_URI;
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(MONGODB_URI_DEV!)
