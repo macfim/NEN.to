@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 
 import movieRouter from "./controllers/movie";
+import genreRouter from "./controllers/genre";
 
 const MONGODB_URI_DEV = process.env.MONGODB_URI;
 
@@ -16,5 +17,6 @@ mongoose
   .catch(() => console.log(`failed to connect ${MONGODB_URI_DEV}`));
 
 app.use("/api/movies", movieRouter);
+app.use("/api/genres", genreRouter);
 
 export default app;

@@ -7,6 +7,7 @@ require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const movie_1 = __importDefault(require("./controllers/movie"));
+const genre_1 = __importDefault(require("./controllers/genre"));
 const MONGODB_URI_DEV = process.env.MONGODB_URI;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -15,4 +16,5 @@ mongoose_1.default
     .then(() => console.log(`connected to ${MONGODB_URI_DEV}`))
     .catch(() => console.log(`failed to connect ${MONGODB_URI_DEV}`));
 app.use("/api/movies", movie_1.default);
+app.use("/api/genres", genre_1.default);
 exports.default = app;
