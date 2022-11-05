@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useColorMode,
   IconButton,
@@ -14,9 +14,13 @@ import {
 import { MoonIcon, SunIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
-const LOGGED = false;
-
-const NavBar = () => {
+const NavBar = ({
+  token,
+  userUsername,
+}: {
+  token: string | null;
+  userUsername: string | null;
+}) => {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const { colorMode, toggleColorMode } = useColorMode();
@@ -76,8 +80,8 @@ const NavBar = () => {
         </HStack>
 
         <Flex flex="1 auto" justify="right">
-          {LOGGED ? (
-            <Avatar size="md" />
+          {token && userUsername ? (
+            <Avatar name={userUsername} size="md" />
           ) : (
             <ButtonGroup>
               <Button variant="ghost">

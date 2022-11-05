@@ -5,14 +5,32 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 
+import useLocalStorage from "./hooks/useLocalStorage";
+
 const App = () => {
+  const [token, setToken] = useLocalStorage<string | null>("token", null);
+  const [userUsername, setUserUsername] = useLocalStorage<string | null>(
+    "username",
+    null
+  );
+
   return (
     <>
-      <NavBar />
+      <NavBar token={token} userUsername={userUsername} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+        <Route
+          path="login"
+          element={
+            <Login setToken={setToken} setUserUsername={setUserUsername} />
+          }
+        />
+        <Route
+          path="register"
+          element={
+            <Register setToken={setToken} setUserUsername={setUserUsername} />
+          }
+        />
       </Routes>
     </>
   );

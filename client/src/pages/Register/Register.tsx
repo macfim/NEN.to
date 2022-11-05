@@ -11,7 +11,10 @@ import {
   Divider,
   Text,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+
+import { createUser } from "../../api/users";
 
 interface ICreds {
   username: string;
@@ -23,8 +26,18 @@ const DefaultCreds = {
   password: "",
 };
 
-const Register = () => {
+const Register = ({ setToken, setUserUsername }: any) => {
   const [creds, setCreds] = useState<ICreds>(DefaultCreds);
+  const navigate = useNavigate();
+
+  const { mutate, isLoading, isError, error } = useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      setToken(null);
+      setUserUsername(null);
+    },
+    onError: (err: any) => err,
+  });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,8 +46,9 @@ const Register = () => {
     if (!username || !password)
       return alert("username or/and password are blank");
 
-    alert({ username, password });
+    mutate({ username, password });
 
+    navigate("/login");
     setCreds(DefaultCreds);
   };
 
@@ -75,7 +89,12 @@ const Register = () => {
                 required
               />
             </FormControl>
-            <Button type="submit" colorScheme="linkedin">
+            <Button
+              type="submit"
+              colorScheme="linkedin"
+              isLoading={isLoading}
+              loadingText="registering..."
+            >
               REGISTER
             </Button>
             <Divider />
