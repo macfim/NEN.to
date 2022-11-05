@@ -1,4 +1,7 @@
-import { HStack, Button, Container } from "@chakra-ui/react";
+import { ButtonGroup, Button, Flex, Spinner, Text } from "@chakra-ui/react";
+
+import { useQuery } from "@tanstack/react-query";
+import { getAllGenres } from "../../api/genres";
 
 import Movies from "../../components/Home/Movies";
 
@@ -12,15 +15,38 @@ const genres = [
 ];
 
 const Home = () => {
+  const {
+    data: genres,
+    isError,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["genres"],
+    queryFn: getAllGenres,
+  });
+
   return (
     <>
-      <Container>
-        <HStack justify="space-between" py="1rem">
-          {genres.map((genre, i) => (
-            <Button key={i} variant="ghost">{genre.title}</Button>
-          ))}
-        </HStack>
-      </Container>
+      <Flex maxW="90rem" mx="auto">
+        {isLoading ? <Spinner size="md" mx="auto" /> : null}
+        {isError ? <Text mx="auto">failed</Text> : null}
+        {isSuccess ? (
+          <ButtonGroup py="1rem" mx="auto">
+            {genres
+              .map((genre) => ({ genre, sort: Math.random() }))
+              .sort((a, b) => a.sort - b.sort)
+              .map(({ genre }) => (
+                <Button
+                  key={genre.id}
+                  variant="ghost"
+                  textTransform="lowercase"
+                >
+                  {genre.title}
+                </Button>
+              ))}
+          </ButtonGroup>
+        ) : null}
+      </Flex>
       <Movies />
     </>
   );

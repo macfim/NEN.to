@@ -1,4 +1,4 @@
-import { Wrap, Flex } from "@chakra-ui/react";
+import { Wrap, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 
 import MovieCard from "./MovieCard";
@@ -18,18 +18,11 @@ const Movies = () => {
   });
 
   return (
-    <Flex
-      as="main"
-      my="2rem"
-      maxW="90rem"
-      flexDirection="row"
-      mx="auto"
-      px="2rem"
-    >
-      {isLoading ? <div>loading...</div> : null}
-      {isError ? <div>failed</div> : null}
+    <Flex as="main" my="2rem" maxW="90rem" mx="auto" px="2rem">
+      {isLoading ? <Spinner size="xl" mx="auto" /> : null}
+      {isError ? <Text mx="auto">failed</Text> : null}
       {isSuccess ? (
-        <Wrap spacing="3rem" justify="center">
+        <Wrap spacing="3rem" justify="center" mx="auto">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
