@@ -10,6 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const movie_1 = __importDefault(require("./controllers/movie"));
 const genre_1 = __importDefault(require("./controllers/genre"));
 const user_1 = __importDefault(require("./controllers/user"));
+const login_1 = __importDefault(require("./controllers/login"));
 const MONGODB_URI_DEV = process.env.MONGODB_URI;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -21,4 +22,5 @@ mongoose_1.default
 app.use("/api/movies", movie_1.default);
 app.use("/api/genres", genre_1.default);
 app.use("/api/users", user_1.default);
+app.use("/api/login", login_1.default);
 exports.default = app;
