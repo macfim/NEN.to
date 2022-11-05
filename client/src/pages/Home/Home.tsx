@@ -1,4 +1,11 @@
-import { ButtonGroup, Button, Flex, Spinner, Text } from "@chakra-ui/react";
+import {
+  ButtonGroup,
+  Button,
+  Flex,
+  Spinner,
+  Text,
+  Box,
+} from "@chakra-ui/react";
 
 import { useQuery } from "@tanstack/react-query";
 import { getAllGenres } from "../../api/genres";
@@ -27,8 +34,12 @@ const Home = () => {
 
   return (
     <>
-      <Flex maxW="90rem" mx="auto">
-        {isLoading ? <Spinner size="md" mx="auto" /> : null}
+      <Flex maxW="90rem" mx="auto" pt="5rem">
+        {isLoading ? (
+          <Box py="1rem" mx="auto">
+            <Spinner size="md" />
+          </Box>
+        ) : null}
         {isError ? <Text mx="auto">failed</Text> : null}
         {isSuccess ? (
           <ButtonGroup py="1rem" mx="auto">
