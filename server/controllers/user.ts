@@ -19,9 +19,10 @@ userRouter.post("/", async (request: Request, response: Response) => {
       return response
         .status(400)
         .json({ error: "username or/and password are blank" });
-
-    const saltRounds = process.env.SALT;
-    const hash = await bcrypt.hash(password, Number(saltRounds));
+      
+    const saltRounds = Number(process.env.SALT);
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       username,
