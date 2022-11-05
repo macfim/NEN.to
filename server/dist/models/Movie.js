@@ -7,11 +7,12 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const movieSchema = new mongoose_1.default.Schema({
     title: {
         type: String,
-        required: true,
+        required: [true, "can't be blank"],
+        match: [/^[a-zA-Z0-9]+$/, "is invalid"],
     },
     poster: {
         type: String,
-        required: true,
+        required: [true, "can't be blank"],
     },
     genres: [
         {
@@ -19,15 +20,7 @@ const movieSchema = new mongoose_1.default.Schema({
             ref: "Genre",
         },
     ],
-    publishedAt: {
-        type: String,
-        required: true,
-    },
-    updatedAt: {
-        type: String,
-        required: true,
-    },
-});
+}, { timestamps: true });
 movieSchema.set("toJSON", {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id;

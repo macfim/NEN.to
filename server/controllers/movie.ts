@@ -6,7 +6,7 @@ const movieRouter = express.Router();
 
 movieRouter.get("/", async (request: Request, response: Response) => {
   try {
-    const movies = await Movie.find({}).populate('genres', 'title');
+    const movies = await Movie.find({}).populate("genres", "title");
 
     if (movies.length === 0) return response.json({ error: "no movies found" });
 
@@ -21,7 +21,7 @@ movieRouter.get("/:id", async (request: Request, response: Response) => {
     const { id } = request.params;
     console.log(id);
 
-    const movie = await Movie.findById(id).populate('genres', 'title');
+    const movie = await Movie.findById(id).populate("genres", "title");
 
     response.json(movie);
   } catch (err: any) {
@@ -36,14 +36,10 @@ movieRouter.post("/", async (request: Request, response: Response) => {
     if (!title || !poster)
       return response.json({ error: "title and/or poster are missing" });
 
-    const currentDate = new Date().toUTCString();
-
     const movie = new Movie({
       title,
       poster,
       genres: genres && [],
-      updatedAt: currentDate,
-      publishedAt: currentDate,
     });
 
     const newMovie = await movie.save();

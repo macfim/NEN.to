@@ -1,32 +1,32 @@
 import mongoose from "mongoose";
 
-const movieSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
-    title: {
+    username: {
       type: String,
+      lowercase: true,
       required: [true, "can't be blank"],
       match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+      unique: true,
     },
-    poster: {
+    hash: {
       type: String,
-      required: [true, "can't be blank"],
+      required: true,
     },
-    genres: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Genre",
-      },
-    ],
+    image: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
 
-movieSchema.set("toJSON", {
+userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
     delete returnedObject.__v;
+    delete returnedObject.hash;
   },
 });
 
-export default mongoose.model("Movie", movieSchema);
+export default mongoose.model("User", userSchema);

@@ -17,7 +17,7 @@ const Movie_1 = __importDefault(require("../models/Movie"));
 const movieRouter = express_1.default.Router();
 movieRouter.get("/", (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const movies = yield Movie_1.default.find({}).populate('genres', 'title');
+        const movies = yield Movie_1.default.find({}).populate("genres", "title");
         if (movies.length === 0)
             return response.json({ error: "no movies found" });
         response.json(movies);
@@ -30,7 +30,7 @@ movieRouter.get("/:id", (request, response) => __awaiter(void 0, void 0, void 0,
     try {
         const { id } = request.params;
         console.log(id);
-        const movie = yield Movie_1.default.findById(id).populate('genres', 'title');
+        const movie = yield Movie_1.default.findById(id).populate("genres", "title");
         response.json(movie);
     }
     catch (err) {
@@ -42,13 +42,10 @@ movieRouter.post("/", (request, response) => __awaiter(void 0, void 0, void 0, f
         const { title, poster, genres } = request.body;
         if (!title || !poster)
             return response.json({ error: "title and/or poster are missing" });
-        const currentDate = new Date().toUTCString();
         const movie = new Movie_1.default({
             title,
             poster,
             genres: genres && [],
-            updatedAt: currentDate,
-            publishedAt: currentDate,
         });
         const newMovie = yield movie.save();
         response.json(newMovie);
