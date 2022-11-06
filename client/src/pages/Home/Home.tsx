@@ -1,18 +1,14 @@
-import {
-  ButtonGroup,
-  Button,
-  Flex,
-  Spinner,
-  Text,
-  Box,
-} from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text, Box, Wrap } from "@chakra-ui/react";
 
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { getAllGenres } from "../../api/genres";
 
 import Movies from "../../components/Home/Movies";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const {
     data: genres,
     isError,
@@ -33,20 +29,20 @@ const Home = () => {
         ) : null}
         {isError ? <Text mx="auto">failed</Text> : null}
         {isSuccess ? (
-          <ButtonGroup py="1rem" mx="auto">
-            {genres
-              .map((genre) => ({ genre, sort: Math.random() }))
-              .sort((a, b) => a.sort - b.sort)
-              .map(({ genre }) => (
-                <Button
-                  key={genre.id}
-                  variant="ghost"
-                  textTransform="lowercase"
-                >
-                  {genre.title}
-                </Button>
-              ))}
-          </ButtonGroup>
+          <Wrap py="1rem" mx="auto" justify="center">
+            <Button variant="ghost" onClick={() => navigate(`/`)}>
+              All
+            </Button>
+            {genres.map((genre) => (
+              <Button
+                key={genre.id}
+                variant="ghost"
+                onClick={() => navigate(`/${genre.title}`)}
+              >
+                {genre.title}
+              </Button>
+            ))}
+          </Wrap>
         ) : null}
       </Flex>
       <Movies />

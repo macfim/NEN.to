@@ -22,15 +22,16 @@ const App = () => {
     <toastContext.Provider value={toast}>
       <NavBar token={token} userUsername={userUsername} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route index element={<Home />} />
+        <Route path=":genre" element={<Home />} />
         <Route
-          path="login"
+          path="auth/login"
           element={
             <Login setToken={setToken} setUserUsername={setUserUsername} />
           }
         />
         <Route
-          path="register"
+          path="auth/register"
           element={
             <Register setToken={setToken} setUserUsername={setUserUsername} />
           }

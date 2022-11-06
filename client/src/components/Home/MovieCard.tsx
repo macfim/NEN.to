@@ -1,4 +1,3 @@
-
 import {
   Box,
   Image,
@@ -7,6 +6,7 @@ import {
   SimpleGrid,
   AspectRatio,
   Skeleton,
+  GridItem,
 } from "@chakra-ui/react";
 
 import { IMovie } from "../../utils/interfaces";
@@ -17,7 +17,7 @@ type Props = {
 
 const MovieCard = ({ movie }: Props) => {
   return (
-    <Box w="12rem" pb=".5rem" px=".1rem">
+    <GridItem w="full" pb=".5rem" px=".1rem">
       <AspectRatio ratio={2 / 3}>
         <Image
           src={movie.poster}
@@ -43,7 +43,7 @@ const MovieCard = ({ movie }: Props) => {
           more...
         </Badge>
       </SimpleGrid>
-    </Box>
+    </GridItem>
   );
 };
 
