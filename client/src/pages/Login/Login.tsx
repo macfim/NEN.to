@@ -124,7 +124,7 @@ const Login = ({ setToken, setUserUsername }: any) => {
             <Text>
               <span style={{ opacity: "0.5" }}>Don't have an account ?</span>{" "}
               <Button colorScheme="linkedin" variant="link">
-                <Link to="/register">Register</Link>
+                <Link to="/auth/register">Register</Link>
               </Button>
             </Text>
           </Stack>

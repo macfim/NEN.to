@@ -45,7 +45,7 @@ const Register = ({ setToken, setUserUsername }: any) => {
         isClosable: true,
         position: "top-left",
       });
-      navigate("/login");
+      navigate("/auth/login");
       setCreds(DefaultCreds);
     },
     onError: (err: any) => {
@@ -124,7 +124,7 @@ const Register = ({ setToken, setUserUsername }: any) => {
             <Text>
               <span style={{ opacity: "0.5" }}>Don't have an account ?</span>{" "}
               <Button colorScheme="linkedin" variant="link">
-                <Link to="/login">Login</Link>
+                <Link to="/auth/login">Login</Link>
               </Button>
             </Text>
           </Stack>

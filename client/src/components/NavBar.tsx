@@ -139,10 +139,10 @@ const NavBar = ({
           ) : (
             <ButtonGroup>
               <Button variant="ghost">
-                <Link to="/login">Login</Link>
+                <Link to="/auth/login">Login</Link>
               </Button>
               <Button colorScheme="linkedin">
-                <Link to="/register">Register</Link>
+                <Link to="/auth/register">Register</Link>
               </Button>
             </ButtonGroup>
           )}
