@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   useColorMode,
   IconButton,
@@ -10,9 +10,19 @@ import {
   Box,
   ButtonGroup,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuGroup,
+  Tooltip,
+  useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, SearchIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+
+import ModalSearchBar from "./ModalSearchBar";
 
 const NavBar = ({
   token,
@@ -22,8 +32,12 @@ const NavBar = ({
   userUsername: string | null;
 }) => {
   const [searchValue, setSearchValue] = useState<string>("");
+  const [isSmallScreen] = useMediaQuery("(max-width: 800px)");
 
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const isLogged: boolean = token && userUsername ? true : false;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -63,25 +77,65 @@ const NavBar = ({
           </Heading>
         </Box>
 
-        <HStack as="form" flex="1 auto" onSubmit={handleSubmit}>
-          <IconButton aria-label="search button" type="submit">
-            <SearchIcon />
-          </IconButton>
+        <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
+          <Tooltip label="search for a movie">
+            {isSmallScreen ? (
+              <IconButton aria-label="search button" onClick={onOpen}>
+                <SearchIcon />
+              </IconButton>
+            ) : (
+              <IconButton aria-label="search button" type="submit">
+                <SearchIcon />
+              </IconButton>
+            )}
+          </Tooltip>
           <Input
             type="search"
             w="25rem"
             placeholder="Search for a movie"
             value={searchValue}
             onChange={handleChange}
+            display={{ base: "none", md: "block" }}
           />
-          <IconButton aria-label="toggle color mode" onClick={toggleColorMode}>
-            {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
-          </IconButton>
+          <ModalSearchBar
+            isOpen={isOpen}
+            onClose={onClose}
+            value={searchValue}
+            onChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
+          <Tooltip label="toggle color mode">
+            <IconButton
+              aria-label="toggle color mode"
+              onClick={toggleColorMode}
+            >
+              {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
+            </IconButton>
+          </Tooltip>
+          {isLogged ? (
+            <Tooltip label="add a movie">
+              <IconButton aria-label="add a movie">
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+          ) : null}
         </HStack>
 
         <Flex flex="1 auto" justify="right">
-          {token && userUsername ? (
-            <Avatar name={userUsername} size="md" />
+          {isLogged ? (
+            <Menu>
+              <Tooltip label="Profile">
+                <MenuButton>
+                  <Avatar name={userUsername!} size="md" />
+                </MenuButton>
+              </Tooltip>
+              <MenuList>
+                <MenuGroup title="Profile">
+                  <MenuItem>My Account</MenuItem>
+                  <MenuItem>My Movies</MenuItem>
+                </MenuGroup>
+              </MenuList>
+            </Menu>
           ) : (
             <ButtonGroup>
               <Button variant="ghost">
