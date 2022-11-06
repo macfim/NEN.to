@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useToast } from "@chakra-ui/react";
 
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home/Home";
@@ -7,15 +8,18 @@ import Register from "./pages/Register/Register";
 
 import useLocalStorage from "./hooks/useLocalStorage";
 
+import { toastContext } from "./context/toast";
+
 const App = () => {
   const [token, setToken] = useLocalStorage<string | null>("token", null);
   const [userUsername, setUserUsername] = useLocalStorage<string | null>(
     "username",
     null
   );
+  const toast = useToast();
 
   return (
-    <>
+    <toastContext.Provider value={toast}>
       <NavBar token={token} userUsername={userUsername} />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -32,7 +36,7 @@ const App = () => {
           }
         />
       </Routes>
-    </>
+    </toastContext.Provider>
   );
 };
 

@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import { useToast } from "../../context/toast";
 
 import { loginUser } from "../../api/login";
 
@@ -29,14 +30,39 @@ const DefaultCreds = {
 const Login = ({ setToken, setUserUsername }: any) => {
   const [creds, setCreds] = useState<ICreds>(DefaultCreds);
   const navigate = useNavigate();
+  const toast = useToast();
 
-  const { mutate, isLoading, isError, error } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: loginUser,
     onSuccess: (response) => {
       setToken(response.token);
       setUserUsername(response.username);
+      toast({
+        title: "Account Logged.",
+        description: `Welcome back \"${response.username}\"`,
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: "top-left",
+      });
+      navigate("/");
+      setCreds(DefaultCreds);
     },
-    onError: (err: any) => err,
+    onError: (err: any) => {
+      const toastConfig = {
+        title: "Something Wrong",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top-left",
+      };
+
+      if (err.response.data.error) {
+        return toast({ ...toastConfig, description: err.response.data.error });
+      }
+
+      toast({ ...toastConfig, description: err.message });
+    },
   });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -47,9 +73,6 @@ const Login = ({ setToken, setUserUsername }: any) => {
       return alert("username or/and password are blank");
 
     mutate({ username, password });
-
-    navigate("/");
-    setCreds(DefaultCreds);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
