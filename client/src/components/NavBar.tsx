@@ -58,7 +58,7 @@ const NavBar = ({
         <Box flex="1 auto">
           <Heading as="h1" size="lg">
             <Link to="/">
-              <span style={{ textTransform: "uppercase" }}>Ayanokoji</span>.to
+              <span style={{ textTransform: "uppercase" }}>nen</span>.to
             </Link>
           </Heading>
         </Box>
