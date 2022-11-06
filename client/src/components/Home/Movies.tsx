@@ -1,4 +1,11 @@
-import { Flex, Spinner, Text, Grid } from "@chakra-ui/react";
+import {
+  Spinner,
+  Text,
+  Grid,
+  Heading,
+  Box,
+  Divider,
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
@@ -27,7 +34,11 @@ const Movies = () => {
   } else movies = data!;
 
   return (
-    <Flex as="main" my="2rem" maxW="90rem" mx="auto" px="2rem">
+    <Box as="main" my="2rem" maxW="90rem" mx="auto" px="2rem">
+      <Heading as="h2" size="lg">
+        Movies
+      </Heading>
+      <Divider my="1rem" />
       {isLoading ? <Spinner size="xl" mx="auto" /> : null}
       {isError ? <Text mx="auto">failed</Text> : null}
       {isSuccess && movies ? (
@@ -43,7 +54,8 @@ const Movies = () => {
           ))}
         </Grid>
       ) : null}
-    </Flex>
+      <Divider my="1rem" />
+    </Box>
   );
 };
 
