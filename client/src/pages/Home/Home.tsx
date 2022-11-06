@@ -12,15 +12,6 @@ import { getAllGenres } from "../../api/genres";
 
 import Movies from "../../components/Home/Movies";
 
-const genres = [
-  { title: "anime" },
-  { title: "notanime" },
-  { title: "anime" },
-  { title: "notanime" },
-  { title: "anime" },
-  { title: "notanime" },
-];
-
 const Home = () => {
   const {
     data: genres,
