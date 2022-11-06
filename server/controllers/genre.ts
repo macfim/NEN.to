@@ -8,7 +8,8 @@ genreRouter.get("/", async (request: Request, response: Response) => {
   try {
     const genres = await Genre.find({}).populate("movies");
 
-    if (genres.length === 0) return response.json({ error: "no genres found" });
+    if (genres.length === 0)
+      return response.status(400).json({ error: "no genres found" });
 
     response.json(genres);
   } catch (err: any) {
