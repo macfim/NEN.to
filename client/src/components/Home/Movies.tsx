@@ -57,9 +57,25 @@ const Movies = () => {
           columnGap="1rem"
         >
           <AnimatePresence>
-            {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
+            {movies.length > 0 ? (
+              <>
+                {movies.map((movie) => (
+                  <MovieCard key={movie.id} movie={movie} />
+                ))}
+              </>
+            ) : (
+              <Text
+                as={motion.p}
+                initial={{ scale: 0 }}
+                animate={{
+                  scale: 1,
+                  transition: { delay: 0.2, duration: 0.3 },
+                }}
+                textAlign="center"
+              >
+                NO MOVIES FOUND
+              </Text>
+            )}
           </AnimatePresence>
         </Grid>
       ) : null}
