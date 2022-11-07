@@ -110,17 +110,15 @@ const NavBar = ({
         </Box>
 
         <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
-          <Tooltip label="search for a movie">
-            {isSmallScreen ? (
-              <IconButton aria-label="search button" onClick={openSearch}>
-                <SearchIcon />
-              </IconButton>
-            ) : (
-              <IconButton aria-label="search button" type="submit">
-                <SearchIcon />
-              </IconButton>
-            )}
-          </Tooltip>
+          {isSmallScreen ? (
+            <IconButton aria-label="search button" onClick={openSearch}>
+              <SearchIcon />
+            </IconButton>
+          ) : (
+            <IconButton aria-label="search button" type="submit">
+              <SearchIcon />
+            </IconButton>
+          )}
           <Input
             type="search"
             w="25rem"
@@ -145,22 +143,18 @@ const NavBar = ({
             </IconButton>
           </Tooltip>
           {isLogged ? (
-            <Tooltip label="add a movie">
-              <IconButton aria-label="add a movie" onClick={openAddMovie}>
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton aria-label="add a movie" onClick={openAddMovie}>
+              <AddIcon />
+            </IconButton>
           ) : null}
         </HStack>
 
         <Flex flex="1 auto" justify="right">
           {isLogged ? (
             <Menu>
-              <Tooltip label="Profile">
-                <MenuButton>
-                  <Avatar name={userUsername!} size="md" />
-                </MenuButton>
-              </Tooltip>
+              <MenuButton>
+                <Avatar name={userUsername!} size="md" />
+              </MenuButton>
               <MenuList>
                 <MenuGroup title="Profile">
                   <MenuItem>My Account</MenuItem>
