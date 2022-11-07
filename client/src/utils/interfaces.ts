@@ -11,3 +11,9 @@ export interface IMovie {
   publishedAt: string;
   updateAt: string;
 }
+
+export interface INewMovie {
+  title: string;
+  poster: string;
+  genres: string[];
+}

@@ -1,12 +1,4 @@
-import {
-  Button,
-  Flex,
-  Spinner,
-  Text,
-  Box,
-  Wrap,
-  Heading,
-} from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text, Box, Wrap } from "@chakra-ui/react";
 
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -24,9 +16,10 @@ const Genres = () => {
     queryKey: ["genres"],
     queryFn: getAllGenres,
   });
+
   return (
     <>
-      <Flex maxW="90rem" mx="auto" pt="5rem">
+      <Flex maxW="90rem" mx="auto" pt="5rem" pb=".5rem">
         {isLoading ? (
           <Box py="1rem" mx="auto">
             <Spinner size="md" />

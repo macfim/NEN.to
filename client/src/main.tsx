@@ -10,7 +10,7 @@ import theme from "./theme";
 
 const queryClient = new QueryClient();
 
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = "http://localhost:4000/api";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

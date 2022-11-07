@@ -5,6 +5,7 @@ import {
   Heading,
   Box,
   Divider,
+  Flex,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
@@ -21,6 +22,7 @@ const Movies = () => {
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: ["movies"],
     queryFn: getAllMovies,
+    refetchOnReconnect: "always",
   });
 
   if (genre && isSuccess) {
@@ -34,12 +36,16 @@ const Movies = () => {
   } else movies = data!;
 
   return (
-    <Box as="main" my="2rem" maxW="90rem" mx="auto" px="2rem">
+    <Box as="main" mb="2rem" maxW="90rem" mx="auto" px="2rem">
       <Heading as="h2" size="lg">
         Movies
       </Heading>
       <Divider my="1rem" />
-      {isLoading ? <Spinner size="xl" mx="auto" /> : null}
+      {isLoading ? (
+        <Flex w="full" justify="center">
+          <Spinner size="xl" />
+        </Flex>
+      ) : null}
       {isError ? <Text mx="auto">failed</Text> : null}
       {isSuccess && movies ? (
         <Grid

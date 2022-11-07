@@ -23,6 +23,7 @@ import { MoonIcon, SunIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
 import ModalSearchBar from "./ModalSearchBar";
+import AddMovieModel from "./Home/AddMovieModel";
 
 const NavBar = ({
   token,
@@ -35,7 +36,16 @@ const NavBar = ({
   const [isSmallScreen] = useMediaQuery("(max-width: 800px)");
 
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isSearchOpen,
+    onOpen: openSearch,
+    onClose: closeSearch,
+  } = useDisclosure();
+  const {
+    isOpen: isAddMovieOpen,
+    onOpen: openAddMovie,
+    onClose: closeAddMovie,
+  } = useDisclosure();
 
   const isLogged: boolean = token && userUsername ? true : false;
 
@@ -80,7 +90,7 @@ const NavBar = ({
         <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
           <Tooltip label="search for a movie">
             {isSmallScreen ? (
-              <IconButton aria-label="search button" onClick={onOpen}>
+              <IconButton aria-label="search button" onClick={openSearch}>
                 <SearchIcon />
               </IconButton>
             ) : (
@@ -98,8 +108,8 @@ const NavBar = ({
             display={{ base: "none", md: "block" }}
           />
           <ModalSearchBar
-            isOpen={isOpen}
-            onClose={onClose}
+            isOpen={isSearchOpen}
+            onClose={closeSearch}
             value={searchValue}
             onChange={handleChange}
             handleSubmit={handleSubmit}
@@ -114,7 +124,7 @@ const NavBar = ({
           </Tooltip>
           {isLogged ? (
             <Tooltip label="add a movie">
-              <IconButton aria-label="add a movie">
+              <IconButton aria-label="add a movie" onClick={openAddMovie}>
                 <AddIcon />
               </IconButton>
             </Tooltip>
@@ -148,6 +158,7 @@ const NavBar = ({
           )}
         </Flex>
       </Flex>
+      <AddMovieModel isOpen={isAddMovieOpen} onClose={closeAddMovie} />
     </Box>
   );
 };
