@@ -5,7 +5,6 @@ const movieSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, "can't be blank"],
-      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
     },
     poster: {
       type: String,
