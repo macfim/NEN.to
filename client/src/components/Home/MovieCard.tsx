@@ -7,7 +7,10 @@ import {
   AspectRatio,
   Skeleton,
   GridItem,
+  chakra,
+  shouldForwardProp,
 } from "@chakra-ui/react";
+import { motion, isValidMotionProp } from "framer-motion";
 
 import { IMovie } from "../../utils/interfaces";
 
@@ -15,9 +18,26 @@ type Props = {
   movie: IMovie;
 };
 
+const ChakraBox = chakra(motion.div, {
+  shouldForwardProp: (prop) =>
+    isValidMotionProp(prop) || shouldForwardProp(prop),
+});
+
 const MovieCard = ({ movie }: Props) => {
   return (
-    <GridItem w="full" pb=".5rem" px=".1rem">
+    <ChakraBox
+      as={motion.div}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        delay: ".1",
+        duration: ".5",
+      }}
+      layout
+      w="full"
+      pb=".5rem"
+      px=".1rem"
+    >
       <AspectRatio ratio={2 / 3}>
         <Image
           src={movie.poster}
@@ -43,7 +63,7 @@ const MovieCard = ({ movie }: Props) => {
           more...
         </Badge>
       </SimpleGrid>
-    </GridItem>
+    </ChakraBox>
   );
 };
 

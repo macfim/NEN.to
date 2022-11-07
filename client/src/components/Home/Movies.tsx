@@ -14,6 +14,7 @@ import MovieCard from "./MovieCard";
 
 import { getAllMovies } from "../../api/movies";
 import { IMovie } from "../../utils/interfaces";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Movies = () => {
   const genre = useParams().genre;
@@ -36,7 +37,7 @@ const Movies = () => {
   } else movies = data!;
 
   return (
-    <Box as="main" mb="2rem" maxW="90rem" mx="auto" px="2rem">
+    <Box mb="2rem" maxW="90rem" mx="auto" px="2rem">
       <Heading as="h2" size="lg">
         Movies
       </Heading>
@@ -48,19 +49,21 @@ const Movies = () => {
       ) : null}
       {isError ? <Text mx="auto">failed</Text> : null}
       {isSuccess && movies ? (
-        <Grid
-          templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-          gridAutoRows="auto"
-          w="full"
-          rowGap="3rem"
-          columnGap="1rem"
-        >
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </Grid>
+        <AnimatePresence>
+          <Grid
+            templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+            gridAutoRows="auto"
+            w="full"
+            rowGap="3rem"
+            columnGap="1rem"
+          >
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </Grid>
+        </AnimatePresence>
       ) : null}
-      <Divider my="1rem" />
+      <Divider as={motion.hr} layout my="1rem" />
     </Box>
   );
 };
