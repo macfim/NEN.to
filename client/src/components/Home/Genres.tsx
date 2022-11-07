@@ -1,11 +1,13 @@
 import { Button, Flex, Spinner, Text, Box, Wrap } from "@chakra-ui/react";
-
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllGenres } from "../../api/genres";
+import { motion } from "framer-motion";
 
 const Genres = () => {
   const navigate = useNavigate();
+
+  const genreParam = useParams().genre;
 
   const {
     data: genres,
@@ -16,6 +18,17 @@ const Genres = () => {
     queryKey: ["genres"],
     queryFn: getAllGenres,
   });
+
+  const Underline = (
+    <Box
+      as={motion.div}
+      layoutId="underline"
+      h=".1rem"
+      w="70%"
+      mx="auto"
+      bg="white"
+    />
+  );
 
   return (
     <>
@@ -28,17 +41,22 @@ const Genres = () => {
         {isError ? <Text mx="auto">failed</Text> : null}
         {isSuccess ? (
           <Wrap py="1rem" mx="auto" justify="center">
-            <Button variant="ghost" onClick={() => navigate(`/`)}>
-              All
-            </Button>
-            {genres.map((genre) => (
-              <Button
-                key={genre.id}
-                variant="ghost"
-                onClick={() => navigate(`/${genre.title}`)}
-              >
-                {genre.title}
+            <Box>
+              <Button variant="ghost" onClick={() => navigate(`/`)}>
+                All
               </Button>
+              {!genreParam ? Underline : null}
+            </Box>
+            {genres.map((genre) => (
+              <Box key={genre.id}>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate(`/${genre.title}`)}
+                >
+                  {genre.title}
+                </Button>
+                {genre.title === genreParam ? Underline : null}
+              </Box>
             ))}
           </Wrap>
         ) : null}
