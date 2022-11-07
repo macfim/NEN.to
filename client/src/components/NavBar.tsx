@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   Input,
+  Image,
   Box,
   ButtonGroup,
   Button,
@@ -40,6 +41,7 @@ const NavBar = ({
   setUserUsername: any;
 }) => {
   const [searchValue, setSearchValue] = useState<string>("");
+  const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const [isSmallScreen] = useMediaQuery("(max-width: 800px)");
 
   const toast = useToast();
@@ -57,6 +59,14 @@ const NavBar = ({
   } = useDisclosure();
 
   const isLogged: boolean = token && userUsername ? true : false;
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY < 100) {
+      setShowHeaderShadow(false);
+    } else {
+      !showHeaderShadow ? setShowHeaderShadow(true) : null;
+    }
+  });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -86,12 +96,13 @@ const NavBar = ({
 
   return (
     <Box
+      as="header"
       w="full"
       position="fixed"
       zIndex="10"
       bg="white"
       _dark={{ bg: "gray.800" }}
-      boxShadow="sm"
+      boxShadow={showHeaderShadow ? "md" : ""}
     >
       <Flex
         as="header"
@@ -101,21 +112,26 @@ const NavBar = ({
         px="2rem"
         py="1rem"
       >
-        <Box flex="1 auto">
-          <Heading as="h1" size="lg">
-            <Link to="/">
-              <span style={{ textTransform: "uppercase" }}>nen</span>.to
-            </Link>
-          </Heading>
-        </Box>
+        <HStack flex="1 auto">
+          <Image src="/favicon-32x32.png" alt="welp" />
+          <Link to="/">
+            <Heading as="h1" size="lg">
+              TMovies
+            </Heading>
+          </Link>
+        </HStack>
 
         <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
           {isSmallScreen ? (
-            <IconButton aria-label="search button" onClick={openSearch}>
+            <IconButton
+              aria-label="search button"
+              onClick={openSearch}
+              disabled
+            >
               <SearchIcon />
             </IconButton>
           ) : (
-            <IconButton aria-label="search button" type="submit">
+            <IconButton aria-label="search button" type="submit" disabled>
               <SearchIcon />
             </IconButton>
           )}
@@ -126,6 +142,7 @@ const NavBar = ({
             value={searchValue}
             onChange={handleChange}
             display={{ base: "none", md: "block" }}
+            disabled
           />
           <ModalSearchBar
             isOpen={isSearchOpen}
@@ -166,12 +183,13 @@ const NavBar = ({
             </Menu>
           ) : (
             <ButtonGroup>
-              <Button variant="ghost">
-                <Link to="/auth/login">Login</Link>
-              </Button>
-              <Button colorScheme="linkedin">
-                <Link to="/auth/register">Register</Link>
-              </Button>
+              <Link to="/auth/login">
+                <Button variant="ghost">Login</Button>
+              </Link>
+
+              <Link to="/auth/register">
+                <Button colorScheme="linkedin">Register</Button>
+              </Link>
             </ButtonGroup>
           )}
         </Flex>
