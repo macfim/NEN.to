@@ -18,6 +18,7 @@ import {
   Tooltip,
   useDisclosure,
   useMediaQuery,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
@@ -25,15 +26,23 @@ import { Link } from "react-router-dom";
 import ModalSearchBar from "./ModalSearchBar";
 import AddMovieModel from "./Home/AddMovieModel";
 
+import { useToast } from "../context/toast";
+
 const NavBar = ({
   token,
   userUsername,
+  setToken,
+  setUserUsername,
 }: {
   token: string | null;
   userUsername: string | null;
+  setToken: any;
+  setUserUsername: any;
 }) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isSmallScreen] = useMediaQuery("(max-width: 800px)");
+
+  const toast = useToast();
 
   const { colorMode, toggleColorMode } = useColorMode();
   const {
@@ -60,6 +69,19 @@ const NavBar = ({
 
     alert(searchValue);
     setSearchValue("");
+  };
+
+  const logout = () => {
+    setUserUsername("");
+    setToken("");
+    toast({
+      title: "Logged out.",
+      description: `You logged out from your account`,
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+      position: "top-left",
+    });
   };
 
   return (
@@ -143,6 +165,8 @@ const NavBar = ({
                 <MenuGroup title="Profile">
                   <MenuItem>My Account</MenuItem>
                   <MenuItem>My Movies</MenuItem>
+                  <MenuDivider />
+                  <MenuItem onClick={logout}>Logout</MenuItem>
                 </MenuGroup>
               </MenuList>
             </Menu>
