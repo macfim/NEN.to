@@ -33,6 +33,8 @@ movieRouter.post("/", async (request: Request, response: Response) => {
   try {
     const { title, poster, genres } = request.body;
 
+    console.log(genres);
+
     if (!title || !poster)
       return response
         .status(400)
@@ -41,7 +43,7 @@ movieRouter.post("/", async (request: Request, response: Response) => {
     const movie = new Movie({
       title,
       poster,
-      genres: genres && [],
+      genres: genres?.length > 0 ? genres : [],
     });
 
     const newMovie = await movie.save();
