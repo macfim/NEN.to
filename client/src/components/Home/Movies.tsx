@@ -49,19 +49,19 @@ const Movies = () => {
       ) : null}
       {isError ? <Text mx="auto">failed</Text> : null}
       {isSuccess && movies ? (
-        <AnimatePresence>
-          <Grid
-            templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
-            gridAutoRows="auto"
-            w="full"
-            rowGap="3rem"
-            columnGap="1rem"
-          >
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+          gridAutoRows="auto"
+          w="full"
+          rowGap="3rem"
+          columnGap="1rem"
+        >
+          <AnimatePresence>
             {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
-          </Grid>
-        </AnimatePresence>
+          </AnimatePresence>
+        </Grid>
       ) : null}
       <Divider as={motion.hr} layout my="1rem" />
     </Box>
