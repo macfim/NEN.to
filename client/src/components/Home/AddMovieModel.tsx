@@ -188,7 +188,7 @@ const AddMovieModel = ({ isOpen, onClose }: Props) => {
                       {checkedGenres.map((genre, i) => (
                         <Checkbox
                           key={genre.id}
-                          checked={checkedGenres[i].checked}
+                          isChecked={checkedGenres[i].checked}
                           onChange={() => handleCheckboxChange(i)}
                           p=".5rem"
                         >
