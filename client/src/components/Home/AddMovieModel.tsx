@@ -81,6 +81,7 @@ const AddMovieModel = ({ isOpen, onClose }: Props) => {
         position: "top-left",
       });
       onClose();
+      setNewMovie(DEFAULT_NEWMOVIE);
     },
     onError: (err: any) => {
       const toastConfig = {
