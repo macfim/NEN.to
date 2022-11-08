@@ -70,9 +70,7 @@ const MovieCard = ({ movie }: Props) => {
             0: 1,
             1: 1,
             2: 2,
-            3: 3,
-            default: 3,
-          }[movie.genres.length]
+          }[movie.genres.length] || 3
         }
         spacing={3}
         textAlign="center"
