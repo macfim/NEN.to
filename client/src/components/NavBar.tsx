@@ -6,7 +6,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Input,
   Image,
   Box,
   ButtonGroup,
@@ -21,13 +20,20 @@ import {
   useMediaQuery,
   MenuDivider,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, SearchIcon, AddIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import {
+  MoonIcon,
+  SunIcon,
+  SearchIcon,
+  AddIcon,
+  HamburgerIcon,
+} from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
 
-import ModalSearchBar from "./ModalSearchBar";
 import AddMovieModel from "./Home/AddMovieModel";
 
 import { useToast } from "../context/toast";
+import MobileNav from "./MobileNav";
+import SearchBar from "./SearchBar";
 
 const NavBar = ({
   token,
@@ -42,20 +48,23 @@ const NavBar = ({
 }) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
-  const [isSmallScreen] = useMediaQuery("(max-width: 800px)");
+  const [isSmallScreen] = useMediaQuery("(max-width: 900px)");
 
   const toast = useToast();
 
+  const navigate = useNavigate();
+
   const { colorMode, toggleColorMode } = useColorMode();
-  const {
-    isOpen: isSearchOpen,
-    onOpen: openSearch,
-    onClose: closeSearch,
-  } = useDisclosure();
+
   const {
     isOpen: isAddMovieOpen,
     onOpen: openAddMovie,
     onClose: closeAddMovie,
+  } = useDisclosure();
+  const {
+    isOpen: isMobileNavOpen,
+    onOpen: openMobileNav,
+    onClose: closeMobileNav,
   } = useDisclosure();
 
   const isLogged: boolean = token && userUsername ? true : false;
@@ -79,6 +88,7 @@ const NavBar = ({
 
     alert(searchValue);
     setSearchValue("");
+    isMobileNavOpen && closeMobileNav();
   };
 
   const logout = () => {
@@ -112,89 +122,93 @@ const NavBar = ({
         px="2rem"
         py="1rem"
       >
-        <HStack flex="1 auto">
+        <HStack flex="1 auto" onClick={() => navigate("/")}>
           <Image src="/favicon-32x32.png" alt="welp" />
-          <Link to="/">
-            <Heading as="h1" size="lg">
-              TMovies
-            </Heading>
-          </Link>
+          <Heading as="h1" size="lg">
+            TMovies
+          </Heading>
         </HStack>
 
-        <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
-          {isSmallScreen ? (
-            <IconButton
-              aria-label="search button"
-              onClick={openSearch}
-              disabled
-            >
-              <SearchIcon />
-            </IconButton>
-          ) : (
-            <IconButton aria-label="search button" type="submit" disabled>
-              <SearchIcon />
-            </IconButton>
-          )}
-          <Input
-            type="search"
-            w="25rem"
-            placeholder="Search for a movie"
-            value={searchValue}
-            onChange={handleChange}
-            display={{ base: "none", md: "block" }}
-            disabled
-          />
-          <ModalSearchBar
-            isOpen={isSearchOpen}
-            onClose={closeSearch}
-            value={searchValue}
-            onChange={handleChange}
-            handleSubmit={handleSubmit}
-          />
-          <Tooltip label="toggle color mode">
-            <IconButton
-              aria-label="toggle color mode"
-              onClick={toggleColorMode}
-            >
-              {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
-            </IconButton>
-          </Tooltip>
-          {isLogged ? (
-            <IconButton aria-label="add a movie" onClick={openAddMovie}>
-              <AddIcon />
-            </IconButton>
-          ) : null}
-        </HStack>
+        {isSmallScreen ? (
+          <IconButton
+            aria-label="toggle mobile navigation"
+            variant="ghost"
+            style={{ aspectRatio: "1/1" }}
+            onClick={openMobileNav}
+          >
+            <HamburgerIcon w="80%" h="80%" />
+          </IconButton>
+        ) : (
+          <>
+            <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
+              <IconButton aria-label="search button" type="submit" disabled>
+                <SearchIcon />
+              </IconButton>
+              <SearchBar
+                value={searchValue}
+                onChange={handleChange}
+                width="25rem"
+              />
+              <Tooltip label="toggle color mode">
+                <IconButton
+                  aria-label="toggle color mode"
+                  onClick={toggleColorMode}
+                >
+                  {colorMode === "light" ? <SunIcon /> : <MoonIcon />}
+                </IconButton>
+              </Tooltip>
+              {isLogged ? (
+                <IconButton aria-label="add a movie" onClick={openAddMovie}>
+                  <AddIcon />
+                </IconButton>
+              ) : null}
+            </HStack>
 
-        <Flex flex="1 auto" justify="right">
-          {isLogged ? (
-            <Menu>
-              <MenuButton>
-                <Avatar name={userUsername!} size="md" />
-              </MenuButton>
-              <MenuList>
-                <MenuGroup title="Profile">
-                  <MenuItem>My Account</MenuItem>
-                  <MenuItem>My Movies</MenuItem>
-                  <MenuDivider />
-                  <MenuItem onClick={logout}>Logout</MenuItem>
-                </MenuGroup>
-              </MenuList>
-            </Menu>
-          ) : (
-            <ButtonGroup>
-              <Link to="/auth/login">
-                <Button variant="ghost">Login</Button>
-              </Link>
-
-              <Link to="/auth/register">
-                <Button colorScheme="linkedin">Register</Button>
-              </Link>
-            </ButtonGroup>
-          )}
-        </Flex>
+            <Flex flex="1 auto" justify="right">
+              {isLogged ? (
+                <Menu>
+                  <MenuButton>
+                    <Avatar name={userUsername!} size="md" />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuGroup title="Profile">
+                      <MenuItem>My Account</MenuItem>
+                      <MenuItem>My Movies</MenuItem>
+                      <MenuDivider />
+                      <MenuItem onClick={logout}>Logout</MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <ButtonGroup isAttached>
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate("/auth/login")}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    colorScheme="linkedin"
+                    onClick={() => navigate("/auth/register")}
+                  >
+                    Register
+                  </Button>
+                </ButtonGroup>
+              )}
+            </Flex>
+          </>
+        )}
       </Flex>
       <AddMovieModel isOpen={isAddMovieOpen} onClose={closeAddMovie} />
+      <MobileNav
+        isOpen={isMobileNavOpen}
+        onClose={closeMobileNav}
+        value={searchValue}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        userUsername={userUsername}
+        logout={logout}
+      />
     </Box>
   );
 };
