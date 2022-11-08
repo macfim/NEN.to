@@ -21,7 +21,7 @@ import {
   AspectRatio,
 } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { getAllGenres } from "../../api/genres";
 
@@ -51,6 +51,8 @@ const AddMovieModel = ({ isOpen, onClose }: Props) => {
   const [newMovie, setNewMovie] = useState<INewMovie>(DEFAULT_NEWMOVIE);
   const [isImgBroken, setIsImgBroken] = useBoolean(true);
   const [checkedGenres, setCheckedGenres] = useState<IGenre[] | null>(null);
+
+  const queryClient = useQueryClient();
 
   const toast = useToast();
 
@@ -82,6 +84,7 @@ const AddMovieModel = ({ isOpen, onClose }: Props) => {
       });
       onClose();
       setNewMovie(DEFAULT_NEWMOVIE);
+      queryClient.invalidateQueries({ queryKey: ["movies"] });
     },
     onError: (err: any) => {
       const toastConfig = {
