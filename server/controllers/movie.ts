@@ -1,12 +1,18 @@
+require("dotenv").config();
 import express, { Request, Response } from "express";
+import jwt  from "jsonwebtoken";
 
 import Movie from "../models/Movie";
+import User from "../models/User";
 
 const movieRouter = express.Router();
 
 movieRouter.get("/", async (request: Request, response: Response) => {
   try {
-    const movies = await Movie.find({}).sort({createdAt: -1}).populate("genres", "title");
+    const movies = await Movie.find({})
+      .sort({ createdAt: -1 })
+      .populate("genres", "title")
+      .populate("postedBy", "username");
 
     if (movies.length === 0) return response.json({ error: "no movies found" });
 
@@ -19,9 +25,10 @@ movieRouter.get("/", async (request: Request, response: Response) => {
 movieRouter.get("/:id", async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    console.log(id);
 
-    const movie = await Movie.findById(id).populate("genres", "title");
+    const movie = await Movie.findById(id)
+      .populate("genres", "title")
+      .populate("postedBy", "username");
 
     response.json(movie);
   } catch (err: any) {
@@ -33,7 +40,24 @@ movieRouter.post("/", async (request: Request, response: Response) => {
   try {
     const { title, poster, genres } = request.body;
 
-    console.log(genres);
+    const authorization = request.get("authorization");
+
+    const SECRET = process.env.SECRET;
+
+    if (!(authorization && authorization.toLowerCase().startsWith("bearer ")))
+      return response.status(400).json({ error: "no token was provided" });
+
+    const token = authorization?.substring(7);
+
+    const decodedToken: any = jwt.verify(token, SECRET!);
+
+    const { id } = decodedToken;
+
+    if (!id) return response.status(401).json({ error: "invalid token" });
+
+    const user = await User.findById(id);
+
+    if (!user) return response.status(400).json({ error: "no user found" });
 
     if (!title || !poster)
       return response
@@ -44,6 +68,7 @@ movieRouter.post("/", async (request: Request, response: Response) => {
       title,
       poster,
       genres: genres?.length > 0 ? genres : [],
+      postedBy: user._id,
     });
 
     const newMovie = await movie.save();

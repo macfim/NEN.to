@@ -199,7 +199,13 @@ const NavBar = ({
           </>
         )}
       </Flex>
-      <AddMovieModel isOpen={isAddMovieOpen} onClose={closeAddMovie} />
+      {token ? (
+        <AddMovieModel
+          isOpen={isAddMovieOpen}
+          onClose={closeAddMovie}
+          token={token}
+        />
+      ) : null}
       <MobileNav
         isOpen={isMobileNavOpen}
         onClose={closeMobileNav}

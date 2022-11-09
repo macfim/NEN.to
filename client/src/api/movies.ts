@@ -7,7 +7,15 @@ export const getAllMovies = async (): Promise<IMovie[]> => {
   return response.data;
 };
 
-export const createMovie = async (newMovie: INewMovie): Promise<IMovie> => {
-  const response = await axios.post("/movies", newMovie);
+export const createMovie = async (arg: any): Promise<IMovie> => {
+  const [newMovie, token] = arg;
+
+  const config = {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  };
+
+  const response = await axios.post("/movies", newMovie, config);
   return response.data;
 };

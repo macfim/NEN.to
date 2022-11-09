@@ -33,6 +33,7 @@ import { createMovie } from "../../api/movies";
 type Props = {
   isOpen: any;
   onClose: any;
+  token: string;
 };
 
 interface IGenre {
@@ -47,7 +48,7 @@ const DEFAULT_NEWMOVIE: INewMovie = {
   genres: [],
 };
 
-const AddMovieModel = ({ isOpen, onClose }: Props) => {
+const AddMovieModel = ({ isOpen, onClose, token }: Props) => {
   const [newMovie, setNewMovie] = useState<INewMovie>(DEFAULT_NEWMOVIE);
   const [isImgBroken, setIsImgBroken] = useBoolean(true);
   const [checkedGenres, setCheckedGenres] = useState<IGenre[] | null>(null);
@@ -131,7 +132,7 @@ const AddMovieModel = ({ isOpen, onClose }: Props) => {
         .filter((genre) => genre.checked);
       const genresIds = isCheckedGenres.map((genre) => genre.id);
 
-      mutate({ ...newMovie, genres: genresIds });
+      mutate([{ ...newMovie, genres: genresIds }, token]);
     }
   };
 

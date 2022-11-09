@@ -16,6 +16,10 @@ const movieSchema = new mongoose.Schema(
         ref: "Genre",
       },
     ],
+    postedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
