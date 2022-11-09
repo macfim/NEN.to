@@ -6,7 +6,7 @@ const movieRouter = express.Router();
 
 movieRouter.get("/", async (request: Request, response: Response) => {
   try {
-    const movies = await Movie.find({}).populate("genres", "title");
+    const movies = await Movie.find({}).sort({createdAt: -1}).populate("genres", "title");
 
     if (movies.length === 0) return response.json({ error: "no movies found" });
 
