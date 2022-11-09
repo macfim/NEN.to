@@ -8,6 +8,10 @@ export interface IMovie {
   title: string;
   poster: string;
   genres: IGenre[];
+  postedBy: {
+    id: string;
+    username: string;
+  };
   publishedAt: string;
   updateAt: string;
 }

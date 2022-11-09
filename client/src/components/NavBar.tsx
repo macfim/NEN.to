@@ -171,12 +171,7 @@ const NavBar = ({
                     <Avatar name={userUsername!} size="md" />
                   </MenuButton>
                   <MenuList>
-                    <MenuGroup title="Profile">
-                      <MenuItem>My Account</MenuItem>
-                      <MenuItem>My Movies</MenuItem>
-                      <MenuDivider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </MenuGroup>
+                    <MenuItem onClick={logout}>Logout</MenuItem>
                   </MenuList>
                 </Menu>
               ) : (

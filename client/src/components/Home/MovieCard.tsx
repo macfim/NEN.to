@@ -7,7 +7,13 @@ import {
   Skeleton,
   chakra,
   shouldForwardProp,
-  Text,
+  Tooltip,
+  Popover,
+  PopoverTrigger,
+  Portal,
+  PopoverBody,
+  PopoverContent,
+  Stack,
 } from "@chakra-ui/react";
 import { motion, isValidMotionProp } from "framer-motion";
 
@@ -78,12 +84,39 @@ const MovieCard = ({ movie }: Props) => {
         {movie.genres.length > 0 ? (
           <>
             {movie.genres.slice(0, 2).map((genre) => (
-              <Badge key={genre.id}>{genre.title}</Badge>
+              <Tooltip label={genre.title}>
+                <Badge
+                  key={genre.id}
+                  style={{
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    cursor: "default",
+                  }}
+                >
+                  {genre.title}
+                </Badge>
+              </Tooltip>
             ))}
             {movie.genres.length > 2 ? (
-              <Badge as="button" variant="outline" cursor="pointer">
-                more...
-              </Badge>
+              <Popover>
+                <PopoverTrigger>
+                  <Badge as="button" variant="outline" cursor="pointer">
+                    more...
+                  </Badge>
+                </PopoverTrigger>
+                <Portal>
+                  <PopoverContent w="auto">
+                    <PopoverBody>
+                      <Stack textAlign="center">
+                        {movie.genres.slice(2).map((genre) => (
+                          <Badge>{genre.title}</Badge>
+                        ))}
+                      </Stack>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Portal>
+              </Popover>
             ) : null}
           </>
         ) : (
