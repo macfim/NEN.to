@@ -84,9 +84,8 @@ const MovieCard = ({ movie }: Props) => {
         {movie.genres.length > 0 ? (
           <>
             {movie.genres.slice(0, 2).map((genre) => (
-              <Tooltip label={genre.title}>
+              <Tooltip key={genre.id} label={genre.title}>
                 <Badge
-                  key={genre.id}
                   style={{
                     textOverflow: "ellipsis",
                     overflow: "hidden",
@@ -110,7 +109,7 @@ const MovieCard = ({ movie }: Props) => {
                     <PopoverBody>
                       <Stack textAlign="center">
                         {movie.genres.slice(2).map((genre) => (
-                          <Badge>{genre.title}</Badge>
+                          <Badge key={genre.id}>{genre.title}</Badge>
                         ))}
                       </Stack>
                     </PopoverBody>
