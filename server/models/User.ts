@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+interface IUser {
+  username: string;
+  hash: string;
+  image: string;
+}
+
+const userSchema = new mongoose.Schema<IUser>(
   {
     username: {
       type: String,
@@ -29,4 +35,4 @@ userSchema.set("toJSON", {
   },
 });
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model<IUser>("User", userSchema);

@@ -1,11 +1,16 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const genreSchema = new mongoose.Schema(
+interface IGenre {
+  title: string;
+  movies: Schema.Types.ObjectId[];
+}
+
+const genreSchema: Schema = new mongoose.Schema<IGenre>(
   {
     title: {
       type: String,
-      required: [true, "can't be blank"],
-      unique: [true, "should be unique"],
+      required: true,
+      unique: true,
     },
     movies: [
       {
@@ -25,4 +30,4 @@ genreSchema.set("toJSON", {
   },
 });
 
-export default mongoose.model("Genre", genreSchema);
+export default mongoose.model<IGenre>("Genre", genreSchema);
