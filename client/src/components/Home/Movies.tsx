@@ -1,3 +1,4 @@
+import { lazy, Suspense, useEffect } from "react";
 import {
   Spinner,
   Text,
@@ -14,7 +15,6 @@ import MovieCard from "./MovieCard";
 
 import { getAllMovies } from "../../api/movies";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
 
 const Movies = () => {
   const genre = useParams().genre;
@@ -23,6 +23,7 @@ const Movies = () => {
     data: movies,
     isSuccess,
     isLoading,
+    isRefetching,
     isError,
     refetch,
   } = useQuery({
@@ -36,9 +37,12 @@ const Movies = () => {
 
   return (
     <Box mb="2rem" maxW="90rem" mx="auto" px="2rem">
-      <Heading as="h2" size="lg">
-        Movies
-      </Heading>
+      <Flex justify="space-between" align="center">
+        <Heading as="h2" size="lg">
+          Movies
+        </Heading>
+        {isRefetching ? <Spinner size="sm" /> : null}
+      </Flex>
       <Divider my="1rem" />
       {isLoading ? (
         <Flex w="full" justify="center">
