@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
-import jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+import Genre from "../models/Genre";
 
 import Movie from "../models/Movie";
 import User from "../models/User";
@@ -9,14 +10,20 @@ const movieRouter = express.Router();
 
 movieRouter.get("/", async (request: Request, response: Response) => {
   try {
-    const movies = await Movie.find({})
+    const { genre } = request.query;
+
+    const returnedGenre = await Genre.findOne({ title: genre }, "_id");
+    const genreId = returnedGenre?._id.toString();
+
+    const option = genreId ? { genres: { $in: genreId } } : {};
+
+    const movies = await Movie.find(option)
       .sort({ createdAt: -1 })
-      .populate("genres", "title")
-      .populate("postedBy", "username");
+      .populate("genres", "title");
 
     if (movies.length === 0) return response.json({ error: "no movies found" });
 
-    response.json(movies);
+    response.json(movies.slice(0));
   } catch (err: any) {
     response.status(400).json({ error: err.message });
   }
@@ -38,7 +45,11 @@ movieRouter.get("/:id", async (request: Request, response: Response) => {
 
 movieRouter.post("/", async (request: Request, response: Response) => {
   try {
-    const { title, poster, genres } = request.body;
+    const {
+      title,
+      poster,
+      genres,
+    }: { title: string; poster: string; genres: string[] } = request.body;
 
     const authorization = request.get("authorization");
 
