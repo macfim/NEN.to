@@ -13,28 +13,26 @@ import { useParams } from "react-router-dom";
 import MovieCard from "./MovieCard";
 
 import { getAllMovies } from "../../api/movies";
-import { IMovie } from "../../utils/interfaces";
 import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 
 const Movies = () => {
   const genre = useParams().genre;
-  let movies: IMovie[];
 
-  const { data, isSuccess, isLoading, isError } = useQuery({
+  const {
+    data: movies,
+    isSuccess,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["movies"],
-    queryFn: getAllMovies,
-    refetchOnReconnect: "always",
+    queryFn: () => getAllMovies(genre),
   });
 
-  if (genre && isSuccess) {
-    movies = data.slice(0).filter((movie) => {
-      const genres = movie.genres.map((genre) => genre.title);
-
-      if (genres.includes(genre)) return true;
-
-      return false;
-    });
-  } else movies = data!;
+  useEffect(() => {
+    refetch();
+  }, [genre]);
 
   return (
     <Box mb="2rem" maxW="90rem" mx="auto" px="2rem">
@@ -48,7 +46,7 @@ const Movies = () => {
         </Flex>
       ) : null}
       {isError ? <Text mx="auto">failed</Text> : null}
-      {isSuccess && movies ? (
+      {isSuccess ? (
         <Grid
           templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
           gridAutoRows="auto"

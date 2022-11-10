@@ -1,9 +1,13 @@
 import axios from "axios";
 
-import { IMovie, INewMovie } from "../utils/interfaces";
+import { IMovie } from "../utils/interfaces";
 
-export const getAllMovies = async (): Promise<IMovie[]> => {
-  const response = await axios.get("/movies");
+export const getAllMovies = async (
+  genre: string | undefined
+): Promise<IMovie[]> => {
+  const PATH = genre ? `?genre=${genre}` : "";
+
+  const response = await axios.get(`/movies${PATH}`);
   return response.data;
 };
 
