@@ -6,7 +6,7 @@ const genreRouter = express.Router();
 
 genreRouter.get("/", async (request: Request, response: Response) => {
   try {
-    const genres = await Genre.find({}).populate("movies");
+    const genres = await Genre.find({});
 
     if (genres.length === 0)
       return response.status(400).json({ error: "no genres found" });
