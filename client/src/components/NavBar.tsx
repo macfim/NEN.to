@@ -209,6 +209,8 @@ const NavBar = ({
         onSubmit={handleSubmit}
         userUsername={userUsername}
         logout={logout}
+        isLogged={isLogged}
+        openAddMovie={openAddMovie}
       />
     </Box>
   );

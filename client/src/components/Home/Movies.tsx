@@ -25,15 +25,11 @@ const Movies = () => {
     isLoading,
     isRefetching,
     isError,
-    refetch,
   } = useQuery({
-    queryKey: ["movies"],
+    queryKey: ["movies", genre],
     queryFn: () => getAllMovies(genre),
+    refetchOnWindowFocus: false,
   });
-
-  useEffect(() => {
-    refetch();
-  }, [genre]);
 
   return (
     <Box mb="2rem" maxW="90rem" mx="auto" px="2rem">

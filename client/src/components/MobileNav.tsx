@@ -1,4 +1,4 @@
-import { CloseIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Drawer,
   DrawerOverlay,
@@ -24,6 +24,8 @@ const MobileNav = ({
   onSubmit,
   userUsername,
   logout,
+  isLogged,
+  openAddMovie,
 }: any) => {
   const navigate = useNavigate();
 
@@ -58,6 +60,17 @@ const MobileNav = ({
                   Search
                 </Button>
               </Center>
+              {isLogged ? (
+                <Center mt="10rem" onClick={onClose}>
+                  <Button
+                    leftIcon={<AddIcon />}
+                    aria-label="add a movie"
+                    onClick={openAddMovie}
+                  >
+                    Add a movie
+                  </Button>
+                </Center>
+              ) : null}
             </form>
           </Stack>
         </DrawerBody>

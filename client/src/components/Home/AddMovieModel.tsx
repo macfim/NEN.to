@@ -85,6 +85,13 @@ const AddMovieModel = ({ isOpen, onClose, token }: Props) => {
       });
       onClose();
       setNewMovie(DEFAULT_NEWMOVIE);
+      setCheckedGenres((prev) => {
+        if (prev) {
+          return prev.map((item) => ({ ...item, checked: false }));
+        } else {
+          return prev;
+        }
+      });
       queryClient.invalidateQueries({ queryKey: ["movies"] });
     },
     onError: (err: any) => {

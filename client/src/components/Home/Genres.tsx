@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const Genres = () => {
   const navigate = useNavigate();
 
-  const genreParam = useParams().genre;
+  const genreParam = useParams().genre ?? "";
 
   const {
     data: genres,
@@ -17,6 +17,11 @@ const Genres = () => {
   } = useQuery({
     queryKey: ["genres"],
     queryFn: getAllGenres,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
+    staleTime: Infinity,
+    cacheTime: Infinity,
   });
 
   const Underline = (
@@ -26,7 +31,8 @@ const Genres = () => {
       h=".1rem"
       w="70%"
       mx="auto"
-      bg="white"
+      bg="black"
+      _dark={{ bg: "white" }}
     />
   );
 
