@@ -12,9 +12,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "../../context/toast";
-
 import { loginUser } from "../../api/login";
 
 interface ICreds {
@@ -83,7 +84,12 @@ const Login = ({ setToken, setUserUsername }: any) => {
   };
 
   return (
-    <Center minH="100vh">
+    <Center
+      as={motion.div}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      minH="100vh"
+    >
       <form onSubmit={handleSubmit}>
         <Box px="1rem" py="1.5rem" w="23rem">
           <Stack spacing="1rem">
