@@ -32,7 +32,7 @@ const Register = ({ setToken, setUserUsername }: any) => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const { mutate, isLoading, isError, error } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: createUser,
     onSuccess: () => {
       setToken(null);
@@ -100,6 +100,7 @@ const Register = ({ setToken, setUserUsername }: any) => {
                 value={creds.username}
                 onChange={handleChange}
                 required
+                autoFocus
               />
             </FormControl>
             <FormControl isRequired>

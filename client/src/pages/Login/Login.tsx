@@ -100,6 +100,7 @@ const Login = ({ setToken, setUserUsername }: any) => {
                 value={creds.username}
                 onChange={handleChange}
                 required
+                autoFocus
               />
             </FormControl>
             <FormControl isRequired>
