@@ -14,11 +14,9 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuGroup,
   Tooltip,
   useDisclosure,
   useMediaQuery,
-  MenuDivider,
 } from "@chakra-ui/react";
 import {
   MoonIcon,
@@ -34,6 +32,7 @@ import AddMovieModel from "./Home/AddMovieModel";
 import { useToast } from "../context/toast";
 import MobileNav from "./MobileNav";
 import SearchBar from "./SearchBar";
+import { motion } from "framer-motion";
 
 const NavBar = ({
   token,
@@ -84,9 +83,9 @@ const NavBar = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement> | any) => {
     event.preventDefault();
 
-    if (!searchValue) return alert("search bar should not be empty");
+    if (!searchValue) return;
 
-    alert(searchValue);
+    navigate(`/search/${searchValue}`);
     setSearchValue("");
     isMobileNavOpen && closeMobileNav();
   };
@@ -122,8 +121,16 @@ const NavBar = ({
         px="2rem"
         py="1rem"
       >
-        <HStack flex="1 auto" onClick={() => navigate("/")}>
-          <Image src="/favicon-32x32.png" alt="welp" />
+        <HStack flex="1 auto" cursor="pointer" onClick={() => navigate("/")}>
+          <Image
+            as={motion.img}
+            whileHover={{ rotate: 90 }}
+            whileTap={{ rotate: 360, scale: 1.2 }}
+            w="2rem"
+            h="2rem"
+            src="/favicon-32x32.png"
+            alt="welp"
+          />
           <Heading as="h1" size="lg">
             TMovies
           </Heading>
@@ -141,7 +148,7 @@ const NavBar = ({
         ) : (
           <>
             <HStack as="form" flex="0 auto" onSubmit={handleSubmit}>
-              <IconButton aria-label="search button" type="submit" disabled>
+              <IconButton aria-label="search button" type="submit">
                 <SearchIcon />
               </IconButton>
               <SearchBar

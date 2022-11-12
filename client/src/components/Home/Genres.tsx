@@ -38,7 +38,7 @@ const Genres = () => {
 
   return (
     <>
-      <Flex maxW="90rem" mx="auto" pt="5rem" pb=".5rem">
+      <Flex maxW="90rem" mx="auto" pb=".5rem">
         {isLoading ? (
           <Box py="1rem" mx="auto">
             <Spinner size="md" />

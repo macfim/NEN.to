@@ -7,6 +7,8 @@ const Home = lazy(() => import("./pages/Home/Home"));
 const Login = lazy(() => import("./pages/Login/Login"));
 const Register = lazy(() => import("./pages/Register/Register"));
 
+import FullPageSpinner from "./components/FullPageSpinner";
+
 import useLocalStorage from "./hooks/useLocalStorage";
 
 import { toastContext } from "./context/toast";
@@ -39,10 +41,11 @@ const App = () => {
           }
         />
         <Route path=":genre" element={<Home />} />
+        <Route path="search/:q" element={<Home />} />
         <Route
           path="auth/login"
           element={
-            <Suspense>
+            <Suspense fallback={<FullPageSpinner />}>
               <Login setToken={setToken} setUserUsername={setUserUsername} />
             </Suspense>
           }
@@ -50,7 +53,7 @@ const App = () => {
         <Route
           path="auth/register"
           element={
-            <Suspense>
+            <Suspense fallback={<FullPageSpinner />}>
               <Register setToken={setToken} setUserUsername={setUserUsername} />
             </Suspense>
           }

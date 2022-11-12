@@ -1,4 +1,3 @@
-import { lazy, Suspense, useEffect } from "react";
 import {
   Spinner,
   Text,
@@ -15,8 +14,13 @@ import MovieCard from "./MovieCard";
 
 import { getAllMovies } from "../../api/movies";
 import { AnimatePresence, motion } from "framer-motion";
+import { searchMovies } from "../../api/search";
 
-const Movies = () => {
+type Props = {
+  searchQuery: string | undefined;
+};
+
+const Movies = ({ searchQuery }: Props) => {
   const genre = useParams().genre;
 
   const {
@@ -26,8 +30,12 @@ const Movies = () => {
     isRefetching,
     isError,
   } = useQuery({
-    queryKey: ["movies", genre],
-    queryFn: () => getAllMovies(genre),
+    queryKey: ["movies", genre, searchQuery],
+    queryFn: () => {
+      if (!searchQuery) return getAllMovies(genre);
+
+      return searchMovies(searchQuery);
+    },
     refetchOnWindowFocus: false,
   });
 
@@ -35,7 +43,7 @@ const Movies = () => {
     <Box mb="2rem" maxW="90rem" mx="auto" px="2rem">
       <Flex justify="space-between" align="center">
         <Heading as="h2" size="lg">
-          Movies
+          {searchQuery ? searchQuery : "Movies"}
         </Heading>
         {isRefetching ? <Spinner size="sm" /> : null}
       </Flex>
