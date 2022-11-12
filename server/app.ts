@@ -7,9 +7,10 @@ import movieRouter from "./controllers/movie";
 import genreRouter from "./controllers/genre";
 import userRouter from "./controllers/user";
 import loginRouter from "./controllers/login";
+import searchRouter from "./controllers/search";
+import testRouter from "./controllers/test";
 
 import { unknownEndpoint } from "./utils/middleware";
-import testRouter from "./controllers/test";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -28,6 +29,7 @@ app.use("/api/movies", movieRouter);
 app.use("/api/genres", genreRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/search", searchRouter);
 
 app.use("/api/test", testRouter);
 
