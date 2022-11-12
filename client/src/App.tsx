@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
 
@@ -20,6 +20,11 @@ const App = () => {
     null
   );
   const toast = useToast();
+
+  useEffect(() => {
+    const preloadingDiv = document.getElementById("preloading");
+    preloadingDiv?.remove();
+  }, []);
 
   return (
     <toastContext.Provider value={toast}>
