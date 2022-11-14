@@ -18,8 +18,8 @@ const app = express();
 
 mongoose
   .connect(MONGODB_URI!)
-  .then(() => console.log(`connected to ${MONGODB_URI}`))
-  .catch(() => console.log(`failed to connect ${MONGODB_URI}`));
+  .then(() => console.log(`connected to mongodb`))
+  .catch(() => console.log(`failed to connect to mongodb`));
 
 app.use(express.json());
 app.use(express.static("build"));
