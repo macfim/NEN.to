@@ -1,12 +1,13 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
 
-import App from "./App";
+const App = lazy(() => import("./App"));
 import theme from "./theme";
+import FullPageSpinner from "./components/FullPageSpinner";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <Router>
-          <App />
+          <Suspense fallback={<FullPageSpinner />}>
+            <App />
+          </Suspense>
         </Router>
       </QueryClientProvider>
     </ChakraProvider>
